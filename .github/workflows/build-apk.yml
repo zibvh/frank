@@ -37,26 +37,29 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Decode keystore
+      - name: Generate keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/release.keystore
+          keytool -genkeypair -v \
+            -keystore android/app/release.keystore \
+            -alias frankx \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -storepass frankxpass \
+            -keypass frankxpass \
+            -dname "CN=FrankX, OU=Game, O=FrankX, L=Unknown, ST=Unknown, C=US"
 
       - name: Build release APK
         working-directory: android
         run: ./gradlew assembleRelease
-        env:
-          KEYSTORE_PATH: release.keystore
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
       - name: Sign APK
         run: |
           $ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -1)/apksigner sign \
             --ks android/app/release.keystore \
-            --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
-            --ks-key-alias ${{ secrets.KEY_ALIAS }} \
-            --key-pass pass:${{ secrets.KEY_PASSWORD }} \
+            --ks-pass pass:frankxpass \
+            --ks-key-alias frankx \
+            --key-pass pass:frankxpass \
             --out frank-x.apk \
             android/app/build/outputs/apk/release/app-release-unsigned.apk
 
