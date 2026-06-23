@@ -1,42 +1,54 @@
-# Ben 10 Game
+# Frank X
 
-A 3D Ben 10 alien explorer built with React + Three.js.
+Ben 10 alien explorer — React + Three.js, packaged as an Android APK via Capacitor.
 
-## Setup
+## Local dev
 
 ```bash
 npm install
-npm run dev       # local dev server at http://localhost:5173
-npm run build     # production build → /dist
-npm run preview   # preview the build locally
+npm run dev
 ```
+
+## Building the APK via GitHub Actions
+
+### 1. Set up your keystore secrets
+
+Go to your repo → **Settings → Secrets and variables → Actions** and add:
+
+| Secret name | Value |
+|---|---|
+| `KEYSTORE_BASE64` | Your `.keystore` file encoded as base64 (see below) |
+| `KEYSTORE_PASSWORD` | Your keystore password |
+| `KEY_ALIAS` | Your key alias |
+| `KEY_PASSWORD` | Your key password |
+
+**To base64-encode your keystore:**
+```bash
+# macOS / Linux
+base64 -i your-key.keystore | pbcopy   # copies to clipboard
+
+# Windows (PowerShell)
+[Convert]::ToBase64String([IO.File]::ReadAllBytes("your-key.keystore")) | clip
+```
+
+### 2. Push to main
+
+Every push to `main` triggers the workflow. When it finishes:
+
+1. Go to **Actions** tab in your repo
+2. Click the latest run
+3. Scroll to **Artifacts** at the bottom
+4. Download **frank-x-apk**
+
+The zip contains `frank-x.apk` — install it on your phone.
 
 ## Adding theme songs
 
-1. Drop your audio files into `public/songs/` (MP3, WAV, OGG, etc.)
-2. Register them in `src/App.jsx`:
+Drop audio files into `public/songs/`, then register in `src/App.jsx`:
 
 ```js
 const THEME_SONGS = [
-  "/songs/btheme.mp3",
-  "/songs/btheme2.mp3",
+  "./songs/btheme.mp3",
+  "./songs/btheme2.mp3",
 ];
 ```
-
-Songs shuffle automatically and loop forever in the background.
-
-## GitHub Pages deployment
-
-1. Push this folder to a GitHub repo.
-2. Go to **Settings → Pages → Source** and set it to **GitHub Actions**.
-3. Every push to `main` will build and deploy automatically.
-
-### Repo not at root?
-If your site URL will be `https://username.github.io/ben10-game/` (not a custom domain),
-edit `vite.config.js` and set:
-
-```js
-base: "/ben10-game/",
-```
-
-Then push again.

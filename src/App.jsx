@@ -473,12 +473,9 @@ const rand = (a, b) => a + Math.random() * (b - a);
 //   • Fade in gently at ~65% volume
 //   • Resume after tab switch
 //   • Never show controls to the player
-// Songs live in /public/songs/ — Vite serves /public as root,
-// so /songs/btheme.mp3 maps to public/songs/btheme.mp3 on disk.
 const THEME_SONGS = [
-  "/songs/btheme.mp3",   // ← drop your files into public/songs/ and list them here
-  // "/songs/btheme2.mp3",
-  // "/songs/btheme3.ogg",
+  "./songs/btheme.mp3",   // ← drop your files into public/songs/ and list them here
+  // "./songs/btheme2.mp3",
 ];
 
 // ── Main Game ─────────────────────────────────────────────────────────────────
