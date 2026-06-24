@@ -357,7 +357,7 @@ function VirtualJoystick({ onChange, stRef, style }) {
 const rand = (a, b) => a + Math.random() * (b - a);
 
 const THEME_SONGS = [
-  "./songs/btheme.mp3",
+  "./songs/jegede.mp3", "./songs/yayo.mp3", "./songs/mydealer.mp3", 
 ];
 
 // ── Main Game ─────────────────────────────────────────────────────────────────
@@ -1272,12 +1272,6 @@ export default function Ben10Game() {
       const W = container.clientWidth, H = container.clientHeight;
       renderer.setSize(W, H); camera.aspect = W / H; camera.updateProjectionMatrix();
     };
-    animate();
-
-    const onResize = () => {
-      const W = container.clientWidth, H = container.clientHeight;
-      renderer.setSize(W, H); camera.aspect = W / H; camera.updateProjectionMatrix();
-    };
     window.addEventListener("resize", onResize);
 
     return () => {
@@ -1299,7 +1293,6 @@ export default function Ben10Game() {
       if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
       renderer.dispose();
     };
-  }, []);
   }, []);
 
   const stopEvt = (e) => e.stopPropagation();
