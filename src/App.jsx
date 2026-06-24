@@ -260,7 +260,7 @@ const GLB_CONFIG = {
   // ── Four Arms: skin + unique file naming (fa prefix) ─────────────────────
   fourarms: {
     useGLB: true, withSkin: true,
-    model: "./models/fourarms/character.glb",
+    model: "./models/character.glb",
     anims: {
       walk:    "./models/fourarms/fawalk.glb",
       run:     "./models/fourarms/farun.glb",
@@ -274,7 +274,7 @@ const GLB_CONFIG = {
 
   // ── XLR8: shared rig + unique speedup animation ───────────────────────────
   xlr8: {
-    useGLB: true, withSkin: false,
+    useGLB: true, withSkin: true,
     model: "./models/shared/Idle.glb",
     anims: {
       ...SHARED_ANIMS,
@@ -283,12 +283,12 @@ const GLB_CONFIG = {
   },
 
   // ── All other humanoid aliens: shared rig, no skin ────────────────────────
-  heatblast:   { useGLB: true, withSkin: false, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
-  diamondhead: { useGLB: true, withSkin: false, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
-  stinkfly:    { useGLB: true, withSkin: false, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
-  ghostfreak:  { useGLB: true, withSkin: false, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
-  upgrade:     { useGLB: true, withSkin: false, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
-  greymatter:  { useGLB: true, withSkin: false, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
+  heatblast:   { useGLB: true, withSkin: true, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
+  diamondhead: { useGLB: true, withSkin: true, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
+  stinkfly:    { useGLB: true, withSkin: true, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
+  ghostfreak:  { useGLB: true, withSkin: true, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
+  upgrade:     { useGLB: true, withSkin: true, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
+  greymatter:  { useGLB: true, withSkin: true, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
 };
 
 // Animation clip name → ANIM state mapping
@@ -746,13 +746,9 @@ export default function Ben10Game() {
       activeGLBKey = key;
 
       const root = glbMeshes[key];
-
-      if (cfg.withSkin) {
-        // Show GLB mesh, hide the procedural pg geometry (keep pg as physics anchor)
-        root.visible = true;
-        pg.children.forEach(c => { c.visible = false; });
-      }
-      // withSkin: false → GLB loads for animation clips only; procedural boxes stay visible
+      root.visible = true;
+      // Hide the procedural pg geometry (keep pg as physics anchor)
+      pg.children.forEach(c => { c.visible = false; });
       // Scale the GLB root to match alien scale
       const alien = ALIENS[key];
       root.scale.setScalar(alien.scale * 0.01); // Mixamo exports at 100x scale typically
