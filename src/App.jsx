@@ -188,32 +188,6 @@ const ALIENS = {
       return { lLeg, rLeg, lArm, rArm, lShoe, rShoe };
     }
   },
-  wildmutt: {
-    name: "Wildmutt", color: 0xD2691E, accentColor: 0xFF8C00,
-    emissive: 0, emissiveIntensity: 0,
-    speed: 14, sprintMult: 2.0, jumpVel: 12, canFly: false, gravity: -22, scale: 1.1, label: "🦁",
-    attackLabel: "BITE", attackColor: 0xFF8C00,
-    buildMesh: (pg, mk) => {
-      mk(new THREE.BoxGeometry(0.90, 0.70, 1.20), 0xD2691E, 0, 1.0, 0);
-      mk(new THREE.BoxGeometry(0.80, 0.50, 0.50), 0xCC6611, 0, 0.78, 0);
-      mk(new THREE.BoxGeometry(0.50, 0.40, 0.60), 0xD2691E, 0, 1.28, 0.52);
-      mk(new THREE.SphereGeometry(0.10, 8, 6), 0x222222, 0.12, 1.44, 0.76);
-      mk(new THREE.SphereGeometry(0.10, 8, 6), 0x222222, -0.12, 1.44, 0.76);
-      for (let i = 0; i < 5; i++) {
-        const q = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.30, 5),
-          new THREE.MeshLambertMaterial({ color: 0xA0522D }));
-        q.position.set((Math.random()-0.5)*0.5, 1.45, -0.4 + i*0.22);
-        pg.add(q);
-      }
-      const lLeg  = mk(new THREE.BoxGeometry(0.28, 0.76, 0.28), 0xB8621A, 0.30, 0.38, 0);
-      const rLeg  = mk(new THREE.BoxGeometry(0.28, 0.76, 0.28), 0xB8621A, -0.30, 0.38, 0);
-      const lArm  = mk(new THREE.BoxGeometry(0.26, 0.70, 0.26), 0xD2691E, 0.58, 1.05, 0);
-      const rArm  = mk(new THREE.BoxGeometry(0.26, 0.70, 0.26), 0xD2691E, -0.58, 1.05, 0);
-      const lShoe = mk(new THREE.BoxGeometry(0.32, 0.16, 0.48), 0x8B4513, 0.30, 0.04, 0.06);
-      const rShoe = mk(new THREE.BoxGeometry(0.32, 0.16, 0.48), 0x8B4513, -0.30, 0.04, 0.06);
-      return { lLeg, rLeg, lArm, rArm, lShoe, rShoe };
-    }
-  },
   greymatter: {
     name: "Grey Matter", color: 0x808080, accentColor: 0xAAAAAA,
     emissive: 0, emissiveIntensity: 0,
@@ -234,32 +208,6 @@ const ALIENS = {
       return { lLeg, rLeg, lArm, rArm, lShoe, rShoe };
     }
   },
-  cannonbolt: {
-    name: "Cannonbolt", color: 0xFFD700, accentColor: 0xFFFFAA,
-    emissive: 0, emissiveIntensity: 0,
-    speed: 5, sprintMult: 1.2, jumpVel: 7, canFly: false, gravity: -22, scale: 1.3, label: "🟡",
-    attackLabel: "ROLL", attackColor: 0xFFFFAA,
-    buildMesh: (pg, mk) => {
-      mk(new THREE.BoxGeometry(1.0, 1.05, 0.55), 0xFFD700, 0, 1.26, 0);
-      mk(new THREE.BoxGeometry(0.88, 0.40, 0.50), 0xDAA520, 0, 0.80, 0);
-      mk(new THREE.SphereGeometry(0.34, 12, 8), 0xFFD700, 0, 2.00, 0);
-      for (let i = 0; i < 3; i++) {
-        const plate = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.22, 0.08),
-          new THREE.MeshLambertMaterial({ color: 0xFFFACD }));
-        plate.position.set(0, 0.88 + i*0.26, 0.30); pg.add(plate);
-      }
-      mk(new THREE.BoxGeometry(0.44, 0.30, 0.14), 0xFFFFFF, 0, 2.02, 0.28);
-      mk(new THREE.SphereGeometry(0.07, 6, 5), 0x000000, 0.12, 2.05, 0.40);
-      mk(new THREE.SphereGeometry(0.07, 6, 5), 0x000000, -0.12, 2.05, 0.40);
-      const lLeg  = mk(new THREE.BoxGeometry(0.36, 0.82, 0.36), 0xDAA520, 0.23, 0.38, 0);
-      const rLeg  = mk(new THREE.BoxGeometry(0.36, 0.82, 0.36), 0xDAA520, -0.23, 0.38, 0);
-      const lArm  = mk(new THREE.BoxGeometry(0.30, 0.80, 0.30), 0xFFD700, 0.60, 1.26, 0);
-      const rArm  = mk(new THREE.BoxGeometry(0.30, 0.80, 0.30), 0xFFD700, -0.60, 1.26, 0);
-      const lShoe = mk(new THREE.BoxGeometry(0.38, 0.18, 0.52), 0xB8860B, 0.23, 0.04, 0.06);
-      const rShoe = mk(new THREE.BoxGeometry(0.38, 0.18, 0.52), 0xB8860B, -0.23, 0.04, 0.06);
-      return { lLeg, rLeg, lArm, rArm, lShoe, rShoe };
-    }
-  }
 };
 
 const ALIEN_KEYS = Object.keys(ALIENS);
@@ -284,6 +232,75 @@ const toGame = (vdx, vdy, rotated) => rotated ? [vdy, -vdx] : [vdx, vdy];
 
 // ── Animation state machine ───────────────────────────────────────────────────
 // States: IDLE, WALK, RUN, JUMP, FALL, LAND, FLY, ATTACK
+
+// ── GLB Model Config ──────────────────────────────────────────────────────────
+// For aliens that use Mixamo GLB files, define their animation clip name mappings.
+// Files go in: public/models/<alienKey>/
+//   - T-pose/rigged mesh: character.glb  (with or without skin)
+//   - Animations (separate files or embedded): idle.glb, walk.glb, run.glb, jump.glb, fall.glb, land.glb, attack.glb, fly.glb
+//
+// useGLB: true  → load GLB instead of buildMesh()
+// withSkin: true → render the Mixamo mesh directly (fourarms)
+// withSkin: false → apply skeleton to buildMesh() geometry (all others)
+//
+// Animation clip files per alien – the loader tries these paths.
+// If a file is missing, it falls back to the procedural animation.
+// Shared rig animation files (used by all non-skinned humanoid aliens)
+const SHARED_ANIMS = {
+  idle:    "./models/shared/idle.glb",
+  run:     "./models/shared/run.glb",
+  jump:    "./models/shared/jump.glb",
+  attack:  "./models/shared/punch1.glb",
+  attack2: "./models/shared/punch2.glb",
+  attack3: "./models/shared/punch3.glb",
+  // walk/fall/land use procedural fallback (no shared file)
+};
+
+const GLB_CONFIG = {
+  // ── Four Arms: skin + unique file naming (fa prefix) ─────────────────────
+  fourarms: {
+    useGLB: true, withSkin: true,
+    model: "./models/fourarms/character.glb",
+    anims: {
+      run:     "./models/fourarms/farun.glb",
+      jump:    "./models/fourarms/fajump.glb",
+      attack:  "./models/fourarms/fapunch1.glb",
+      attack2: "./models/fourarms/fapunch2.glb",
+      attack3: "./models/fourarms/fastrongpunch.glb",
+      // idle/walk/fall/land fall back to procedural (no fa-specific files)
+    },
+  },
+
+  // ── XLR8: shared rig + unique speedup animation ───────────────────────────
+  xlr8: {
+    useGLB: true, withSkin: false,
+    model: "./models/shared/humanoid_rig.glb",
+    anims: {
+      ...SHARED_ANIMS,
+      speedup: "./models/xlr8/xlr8speedup.glb", // plays when sprint activates
+    },
+  },
+
+  // ── All other humanoid aliens: shared rig, no skin ────────────────────────
+  heatblast:   { useGLB: true, withSkin: false, model: "./models/shared/humanoid_rig.glb", anims: { ...SHARED_ANIMS } },
+  diamondhead: { useGLB: true, withSkin: false, model: "./models/shared/humanoid_rig.glb", anims: { ...SHARED_ANIMS } },
+  stinkfly:    { useGLB: true, withSkin: false, model: "./models/shared/humanoid_rig.glb", anims: { ...SHARED_ANIMS } },
+  ghostfreak:  { useGLB: true, withSkin: false, model: "./models/shared/humanoid_rig.glb", anims: { ...SHARED_ANIMS } },
+  upgrade:     { useGLB: true, withSkin: false, model: "./models/shared/humanoid_rig.glb", anims: { ...SHARED_ANIMS } },
+  greymatter:  { useGLB: true, withSkin: false, model: "./models/shared/humanoid_rig.glb", anims: { ...SHARED_ANIMS } },
+};
+
+// Animation clip name → ANIM state mapping
+const ANIM_CLIP_MAP = {
+  idle: 0,   // ANIM.IDLE
+  walk: 1,   // ANIM.WALK
+  run:  2,   // ANIM.RUN
+  jump: 3,   // ANIM.JUMP
+  fall: 4,   // ANIM.FALL
+  land: 5,   // ANIM.LAND
+  fly:  6,   // ANIM.FLY
+  attack: 7, // ANIM.ATTACK
+};
 const ANIM = { IDLE: 0, WALK: 1, RUN: 2, JUMP: 3, FALL: 4, LAND: 5, FLY: 6, ATTACK: 7 };
 
 // ── Virtual Joystick ───────────────────────────────────────────────────────────
@@ -340,7 +357,7 @@ function VirtualJoystick({ onChange, stRef, style }) {
 const rand = (a, b) => a + Math.random() * (b - a);
 
 const THEME_SONGS = [
-  "./songs/btheme.mp3",
+  "./songs/yayo.mp3", "./songs/jegede.mp3", "./songs/mydealer.mp3",
 ];
 
 // ── Main Game ─────────────────────────────────────────────────────────────────
@@ -419,6 +436,7 @@ export default function Ben10Game() {
     // animation state shared with render loop
     animState: ANIM.IDLE,
     attackTimer: 0,
+    attackVariant: 0,
     landTimer: 0,
     wasOnGround: true,
   });
@@ -620,6 +638,156 @@ export default function Ben10Game() {
 
     let limbs = null;
 
+
+    // ── GLB / Animation Mixer system ──────────────────────────────────────────
+    // Tracks loaded GLB models and their AnimationMixers per alien key
+    const glbMixers = {};      // { alienKey: THREE.AnimationMixer }
+    const glbClips  = {};      // { alienKey: { idle, walk, run, ... } AnimationClip }
+    const glbActions = {};     // { alienKey: { idle, walk, ... } AnimationAction }
+    const glbMeshes = {};      // { alienKey: THREE.Group } (the skinned model root)
+    let   activeGLBKey = null; // which alien's GLB is currently active
+
+    // Dynamically import GLTFLoader only when needed
+    let GLTFLoader = null;
+    const getGLTFLoader = async () => {
+      if (GLTFLoader) return GLTFLoader;
+      const mod = await import("three/examples/jsm/loaders/GLTFLoader.js");
+      GLTFLoader = mod.GLTFLoader;
+      return GLTFLoader;
+    };
+
+    // Load a single GLB file and return its scene + clips
+    const loadGLB = async (url) => {
+      const Loader = await getGLTFLoader();
+      return new Promise((resolve, reject) => {
+        new Loader().load(url, resolve, undefined, reject);
+      });
+    };
+
+    // Load all GLBs for a given alien key (non-blocking, best-effort)
+    const loadAlienGLB = async (key) => {
+      const cfg = GLB_CONFIG[key];
+      if (!cfg || glbMixers[key]) return; // already loaded or not configured
+
+      try {
+        // Load base character model
+        const gltf = await loadGLB(cfg.model);
+        const root = gltf.scene;
+        root.visible = false; // hide until activated
+        root.traverse(n => { if (n.isMesh) { n.castShadow = true; n.receiveShadow = true; } });
+        scene.add(root);
+        glbMeshes[key] = root;
+
+        // Create mixer on the root
+        const mixer = new THREE.AnimationMixer(root);
+        glbMixers[key] = mixer;
+        glbClips[key]   = {};
+        glbActions[key] = {};
+
+        // Load animation clips (from the character file first)
+        for (const clip of gltf.animations) {
+          const animKey = guessAnimName(clip.name);
+          if (animKey) {
+            glbClips[key][animKey] = clip;
+            glbActions[key][animKey] = mixer.clipAction(clip);
+          }
+        }
+
+        // Load per-anim GLB files
+        for (const [animKey, url] of Object.entries(cfg.anims || {})) {
+          if (glbClips[key][animKey]) continue; // already got it from character file
+          try {
+            const ag = await loadGLB(url);
+            if (ag.animations.length > 0) {
+              const clip = ag.animations[0];
+              // Retarget to our mixer's root if needed
+              const retargeted = THREE.AnimationClip.parse(THREE.AnimationClip.toJSON(clip));
+              glbClips[key][animKey] = retargeted;
+              glbActions[key][animKey] = mixer.clipAction(retargeted);
+            }
+          } catch {
+            // Anim file missing – will fall back to procedural for this state
+          }
+        }
+
+        // If this alien is already selected, activate it now
+        if (s.alienKey === key) activateGLB(key);
+
+      } catch {
+        // Model file missing – alien stays procedural
+      }
+    };
+
+    // Guess the animation name from a Mixamo/arbitrary clip name
+    const guessAnimName = (clipName) => {
+      const n = clipName.toLowerCase();
+      if (n.includes("idle"))   return "idle";
+      if (n.includes("walk"))   return "walk";
+      if (n.includes("run"))    return "run";
+      if (n.includes("sprint")) return "run";
+      if (n.includes("jump") || n.includes("leap")) return "jump";
+      if (n.includes("fall") || n.includes("falling")) return "fall";
+      if (n.includes("land"))   return "land";
+      if (n.includes("fly") || n.includes("hover") || n.includes("float")) return "fly";
+      if (n.includes("punch") || n.includes("attack") || n.includes("hit") || n.includes("strike")) return "attack";
+      return null;
+    };
+
+    // Activate a GLB model for display, hide procedural pg children
+    const activateGLB = (key) => {
+      if (!glbMeshes[key]) return;
+      const cfg = GLB_CONFIG[key];
+
+      // Hide previous GLB
+      if (activeGLBKey && glbMeshes[activeGLBKey]) {
+        glbMeshes[activeGLBKey].visible = false;
+      }
+      activeGLBKey = key;
+
+      const root = glbMeshes[key];
+      root.visible = true;
+
+      if (cfg.withSkin) {
+        // Hide the procedural pg geometry (keep pg as physics anchor)
+        pg.children.forEach(c => { c.visible = false; });
+      }
+      // Scale the GLB root to match alien scale
+      const alien = ALIENS[key];
+      root.scale.setScalar(alien.scale * 0.01); // Mixamo exports at 100x scale typically
+    };
+
+    // Deactivate GLB, restore procedural geometry
+    const deactivateGLB = (key) => {
+      if (glbMeshes[key]) glbMeshes[key].visible = false;
+      pg.children.forEach(c => { c.visible = true; });
+      activeGLBKey = null;
+    };
+
+    // Switch animation clip on a GLB mixer
+    let currentGLBAnimKey = null;
+    const playGLBClip = (alienKey, animKey, loop = true) => {
+      const actions = glbActions[alienKey];
+      if (!actions) return false;
+      // Try exact match, then "attack" for attack2/attack3
+      const key = actions[animKey] ? animKey : (animKey.startsWith("attack") ? "attack" : null);
+      if (!key || !actions[key]) return false;
+      if (currentGLBAnimKey === key) return true;
+
+      // Fade out current
+      if (currentGLBAnimKey && actions[currentGLBAnimKey]) {
+        actions[currentGLBAnimKey].fadeOut(0.2);
+      }
+      // Fade in new
+      const action = actions[key];
+      action.reset().setLoop(loop ? THREE.LoopRepeat : THREE.LoopOnce, Infinity);
+      action.clampWhenFinished = !loop;
+      action.fadeIn(0.2).play();
+      currentGLBAnimKey = key;
+      return true;
+    };
+
+    // Map ANIM state → clip name
+    const ANIM_TO_CLIP = ["idle","walk","run","jump","fall","land","fly","attack"];
     const buildAlien = (key) => {
       while (pg.children.length > 0) pg.remove(pg.children[0]);
       trailParticles.forEach(p => scene.remove(p));
@@ -634,6 +802,32 @@ export default function Ben10Game() {
     buildAlien("heatblast");
 
     alienChangeRef.current = (key) => { buildAlien(key); };
+
+    // Upgraded alienChange: handles both GLB and procedural
+    alienChangeRef.current = (key) => {
+      // Deactivate previous GLB if any
+      if (activeGLBKey) deactivateGLB(activeGLBKey);
+      currentGLBAnimKey = null;
+
+      // Rebuild procedural mesh
+      buildAlien(key);
+
+      // Try to activate GLB (may already be loaded)
+      const cfg = GLB_CONFIG[key];
+      if (cfg) {
+        if (glbMeshes[key]) {
+          activateGLB(key);
+        } else {
+          // Kick off background load
+          loadAlienGLB(key);
+        }
+      }
+    };
+
+    // Kick off background loading of all configured GLB aliens
+    for (const key of Object.keys(GLB_CONFIG)) {
+      loadAlienGLB(key);
+    }
 
     // ── Player state ──────────────────────────────────────────────────────────
     const player = {
@@ -754,6 +948,8 @@ export default function Ben10Game() {
       const attacking = s.attackTimer > 0;
       if (s.attack && s.attackTimer <= 0) {
         s.attackTimer = 0.55; // 0.55s attack window
+        // Cycle through punch variants: attack → attack2 → attack3 → attack → ...
+        s.attackVariant = ((s.attackVariant || 0) % 3) + 1;
         spawnAttackEffect(s.alienKey);
         // Flash the HUD
         setAttackFlash(true);
@@ -996,8 +1192,6 @@ export default function Ben10Game() {
             if (rLeg) rLeg.rotation.x = -legAngle;
             // Twist body into the punch
             pg.rotation.y = player.rot + Math.sin(phase * Math.PI) * 0.22;
-            // Cannonbolt: full roll during attack
-            if (s.alienKey === "cannonbolt") pg.rotation.x += dt * 12;
             if (extra) { extra[0].rotation.x = armAngle * 0.8; extra[1].rotation.x = -armAngle * 0.8; }
             pg.position.y = player.pos.y + Math.sin(phase * Math.PI) * 0.1;
             break;
@@ -1016,11 +1210,6 @@ export default function Ben10Game() {
             pg.rotation.x = lerp(pg.rotation.x || 0, 0, dt * 8);
           }
         }
-
-        // Cannonbolt sprint-roll (not attack)
-        if (s.alienKey === "cannonbolt" && newAnimState === ANIM.RUN) {
-          pg.rotation.x += dt * 8;
-        }
       }
 
       // XLR8 trail fade when stopped
@@ -1038,6 +1227,36 @@ export default function Ben10Game() {
 
       // Camera
       const camDist = 6.5 * (alien.scale || 1.0);
+
+      // ── GLB mixer update + clip switching ────────────────────────────────────
+      // If this alien has a loaded GLB, update its mixer and drive animation clips.
+      // The procedural limb animations above still run but the GLB mesh is on top.
+      if (activeGLBKey === s.alienKey) {
+        const mixer = glbMixers[s.alienKey];
+        if (mixer) {
+          mixer.update(dt);
+          // Sync GLB position/rotation to the procedural player group
+          const root = glbMeshes[s.alienKey];
+          if (root) {
+            root.position.copy(pg.position);
+            root.rotation.y = pg.rotation.y;
+            root.rotation.x = pg.rotation.x;
+          }
+          // Pick clip name — attack cycles through variants, XLR8 sprint triggers speedup
+          let clipName = ANIM_TO_CLIP[newAnimState];
+          if (newAnimState === ANIM.ATTACK) {
+            // Cycle: 1→"attack", 2→"attack2", 3→"attack3"
+            const v = s.attackVariant || 1;
+            clipName = v === 1 ? "attack" : `attack${v}`;
+          } else if (s.alienKey === "xlr8" && newAnimState === ANIM.RUN && sprint) {
+            // XLR8 speed boost: play speedup clip instead of run when sprinting
+            clipName = "speedup";
+          }
+          const isLooping = newAnimState !== ANIM.LAND && newAnimState !== ANIM.ATTACK;
+          playGLBClip(s.alienKey, clipName, isLooping);
+        }
+      }
+
       const tCam = new THREE.Vector3(
         player.pos.x + Math.sin(s.camYaw) * camDist * Math.cos(s.camPitch),
         player.pos.y + 1.65 * (alien.scale || 1.0) + Math.sin(s.camPitch) * camDist,
@@ -1046,6 +1265,12 @@ export default function Ben10Game() {
       camera.position.lerp(tCam, 0.11);
       camera.lookAt(player.pos.x, player.pos.y + 1.4 * (alien.scale || 1.0), player.pos.z);
       renderer.render(scene, camera);
+    };
+    animate();
+
+    const onResize = () => {
+      const W = container.clientWidth, H = container.clientHeight;
+      renderer.setSize(W, H); camera.aspect = W / H; camera.updateProjectionMatrix();
     };
     animate();
 
@@ -1068,9 +1293,13 @@ export default function Ben10Game() {
       container.removeEventListener("mousedown", onMD);
       container.removeEventListener("mousemove", onMM);
       container.removeEventListener("mouseup", onMU);
+      // Dispose GLB mixers
+      Object.values(glbMixers).forEach(m => m.stopAllAction());
+      Object.values(glbMeshes).forEach(m => scene.remove(m));
       if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
       renderer.dispose();
     };
+  }, []);
   }, []);
 
   const stopEvt = (e) => e.stopPropagation();
