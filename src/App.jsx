@@ -247,7 +247,7 @@ const toGame = (vdx, vdy, rotated) => rotated ? [vdy, -vdx] : [vdx, vdy];
 // If a file is missing, it falls back to the procedural animation.
 // Shared rig animation files (used by all non-skinned humanoid aliens)
 const SHARED_ANIMS = {
-  idle:    "./models/shared/idle.glb",
+  idle:    "./models/shared/Idle.glb",
   run:     "./models/shared/run.glb",
   jump:    "./models/shared/jump.glb",
   attack:  "./models/shared/punch1.glb",
@@ -262,19 +262,20 @@ const GLB_CONFIG = {
     useGLB: true, withSkin: true,
     model: "./models/fourarms/character.glb",
     anims: {
+      walk:    "./models/fourarms/fawalk.glb",
       run:     "./models/fourarms/farun.glb",
       jump:    "./models/fourarms/fajump.glb",
       attack:  "./models/fourarms/fapunch1.glb",
       attack2: "./models/fourarms/fapunch2.glb",
       attack3: "./models/fourarms/fastrongpunch.glb",
-      // idle/walk/fall/land fall back to procedural (no fa-specific files)
+      // idle/fall/land fall back to procedural (no fa-specific files)
     },
   },
 
   // ── XLR8: shared rig + unique speedup animation ───────────────────────────
   xlr8: {
     useGLB: true, withSkin: false,
-    model: "./models/shared/humanoid_rig.glb",
+    model: "./models/shared/Idle.glb",
     anims: {
       ...SHARED_ANIMS,
       speedup: "./models/xlr8/xlr8speedup.glb", // plays when sprint activates
@@ -282,12 +283,12 @@ const GLB_CONFIG = {
   },
 
   // ── All other humanoid aliens: shared rig, no skin ────────────────────────
-  heatblast:   { useGLB: true, withSkin: false, model: "./models/shared/humanoid_rig.glb", anims: { ...SHARED_ANIMS } },
-  diamondhead: { useGLB: true, withSkin: false, model: "./models/shared/humanoid_rig.glb", anims: { ...SHARED_ANIMS } },
-  stinkfly:    { useGLB: true, withSkin: false, model: "./models/shared/humanoid_rig.glb", anims: { ...SHARED_ANIMS } },
-  ghostfreak:  { useGLB: true, withSkin: false, model: "./models/shared/humanoid_rig.glb", anims: { ...SHARED_ANIMS } },
-  upgrade:     { useGLB: true, withSkin: false, model: "./models/shared/humanoid_rig.glb", anims: { ...SHARED_ANIMS } },
-  greymatter:  { useGLB: true, withSkin: false, model: "./models/shared/humanoid_rig.glb", anims: { ...SHARED_ANIMS } },
+  heatblast:   { useGLB: true, withSkin: false, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
+  diamondhead: { useGLB: true, withSkin: false, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
+  stinkfly:    { useGLB: true, withSkin: false, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
+  ghostfreak:  { useGLB: true, withSkin: false, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
+  upgrade:     { useGLB: true, withSkin: false, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
+  greymatter:  { useGLB: true, withSkin: false, model: "./models/shared/Idle.glb", anims: { ...SHARED_ANIMS } },
 };
 
 // Animation clip name → ANIM state mapping
@@ -745,12 +746,13 @@ export default function Ben10Game() {
       activeGLBKey = key;
 
       const root = glbMeshes[key];
-      root.visible = true;
 
       if (cfg.withSkin) {
-        // Hide the procedural pg geometry (keep pg as physics anchor)
+        // Show GLB mesh, hide the procedural pg geometry (keep pg as physics anchor)
+        root.visible = true;
         pg.children.forEach(c => { c.visible = false; });
       }
+      // withSkin: false → GLB loads for animation clips only; procedural boxes stay visible
       // Scale the GLB root to match alien scale
       const alien = ALIENS[key];
       root.scale.setScalar(alien.scale * 0.01); // Mixamo exports at 100x scale typically
