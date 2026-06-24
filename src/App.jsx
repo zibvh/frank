@@ -357,7 +357,7 @@ function VirtualJoystick({ onChange, stRef, style }) {
 const rand = (a, b) => a + Math.random() * (b - a);
 
 const THEME_SONGS = [
-  "./songs/yayo.mp3", "./songs/jegede.mp3", "./songs/mydealer.mp3",
+  "./songs/btheme.mp3",
 ];
 
 // ── Main Game ─────────────────────────────────────────────────────────────────
